@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Requirements Specification - Initial Questions</title>
+    <link rel="icon" sizes="192x192" href="{{ url_for('static', filename='android-chrome-192x192.png') }}" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="icon" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}" type="image/png">
+    <link rel="icon" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}" type="image/png">
+    <style>
+        *
+        {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            gap: 20px;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background: #222;
+            padding: 0;
+        }
+        header {
+            margin-top: 20px;
+            background: #2e2e2e;
+            color: #eb5ae5;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.349);
+            border: 3px solid #eb5ae5;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 50px;
+        }
+        .container {
+            margin: auto;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 900px;
+            padding: 60px 60px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.349);
+            border: 3px solid #eb5ae5;
+            border-radius: 50px;
+        }
+        .section {
+            justify-content: center;
+            align-items: center;
+            width: 200%; 
+            margin-bottom: 20px;
+            border-radius: 15px;
+            padding: 20px;
+            background: linear-gradient(135deg, #eb5ae5, #2e2e2e);
+            color: #fff;
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+        }
+
+        .section:hover {
+            box-shadow: 0 0 20px rgba(252, 119, 201, 0.6);
+        }
+        .section h2 {
+            margin-top: 0;
+            cursor: pointer;
+            color: #2e2e2e;
+        }
+        textarea {
+            width: 95%;
+            height: 60px;
+            margin: 15px auto;
+            padding: 10px;
+            border: none;
+            border-radius: 25px;
+            background: #2e2e2e;
+            backdrop-filter: blur(10px);
+            transition: border 0.3s, transform 0.3s, box-shadow 0.3s;
+            color: #ffafee;
+            display: block;
+        }
+        textarea:focus {
+            outline: none;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(168, 235, 235, 0.459);
+        }
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            display: block;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin: 10px 5px;
+            appearance: none; /* Remove default checkbox style */
+            background-color: #2e2e2e;
+            border: 2px solid #fff; /* Border color */
+            border-radius: 50%; /* Round shape */
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        input[type="checkbox"]:checked {
+            background-color: #eb5ae5; /* Fill color when checked */
+            border-color: #2e2e2e; /* Border color when checked */
+        }
+        input[type="checkbox"]:checked::after {
+            content: ''; 
+            position: absolute;
+            left: 4px;
+            top: 0;
+            width: 8px;
+            height: 12px;
+            border: solid #2e2e2e;
+            border-width: 0 3px 3px 0; 
+            transform: rotate(45deg);
+        }
+        input[type="checkbox"]:hover {
+            background-color: rgba(255, 255, 255, 0.3); /* Light fill on hover */
+        }
+
+        select {
+            width: 95%;
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 25px;
+            background: #2e2e2e; /* Glass effect */
+            backdrop-filter: blur(10px);
+            transition: background 0.3s;
+            color: #ffafee; /* Text color for input */
+        }
+        select:hover {
+            color: #2e2e2e;
+            background: rgba(255, 164, 240, 0.589);
+            box-shadow: 0 0 15px rgba(168, 235, 235, 0.459); /* Make background less transparent on hover */
+        }
+        .hidden {
+            display: none;
+        }
+        option {
+            border-radius: 50px; 
+            background:#2e2e2e; /* Same background as textarea */
+            color: #ffafee; /* Text color for options */
+            padding: 10px; /* Padding for options */
+            transition: background 0.3s; /* Transition for hover effect */
+        }
+        option:hover {
+            background-color: #ffafee;
+            color: #ffafee;
+        }
+        label {
+            font-weight: bold;
+            color: #fcd0f2;
+        }
+        .next-button, .prev-button {
+            font-weight: bold;
+            position: relative;
+            background: #eb5ae5;
+            color: #2e2e2e;
+            padding: 8px 15px;
+            display: inline-block;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: 0.5s ease-in-out;
+            border-radius: 45px;
+        }
+        .next-button:hover, .prev-button:hover {
+            background: #2e2e2e;
+            font-weight: bold;
+            color: #eb5ae5; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Software Requirements Specification - Initial Questions</h1>
+    </header>
+    
+    <div class="container">
+        <form method="POST" action="{{ url_for('form_page') }}">
+            <div id="ProjectDetails" class="section" onclick="highlightTab('ProjectDetails')">
+                <h2>Project Details</h2>
+                <label for="project_name">Project Name:</label>
+                <textarea id="project_name" name="project_name" placeholder="Enter project name..." onclick="highlightTab('ProjectDetails')"></textarea>
+                <label for="project_description">Project Description:</label>
+                <textarea id="project_description" name="project_description" placeholder="Enter project description..." onclick="highlightTab('ProjectDetails')"></textarea>
+            </div>
+
+            <div id="Stakeholders" class="section" onclick="highlightTab('Stakeholders')">
+                <h2>Stakeholders</h2>
+                <label for="stakeholders">List of Stakeholders:</label>
+                <textarea id="stakeholders" name="stakeholders" placeholder="Enter names and roles of stakeholders..." onclick="highlightTab('Stakeholders')"></textarea>
+                <label for="stakeholder_responsibilities">Stakeholder Responsibilities:</label>
+                <textarea id="stakeholder_responsibilities" name="stakeholder_responsibilities" placeholder="Describe responsibilities..." onclick="highlightTab('Stakeholders')"></textarea>
+            </div>
+
+            <div id="TargetAudience" class="section" onclick="highlightTab('TargetAudience')">
+                <h2>Target Audience</h2>
+                <label for="target_audience">Describe Target Audience:</label>
+                <textarea id="target_audience" name="target_audience" placeholder="Enter details about the target audience..." onclick="highlightTab('TargetAudience')"></textarea>
+            </div>
+
+            <div id="ProjectObjectives" class="section" onclick="highlightTab('ProjectObjectives')">
+                <h2>Project Objectives</h2>
+                <label for="project_objectives">List of Objectives:</label>
+                <textarea id="project_objectives" name="project_objectives" placeholder="Enter project objectives..." onclick="highlightTab('ProjectObjectives')"></textarea>
+            </div>
+
+            <div id="BudgetTimeline" class="section" onclick="highlightTab('BudgetTimeline')">
+                <h2>Budget and Timeline</h2>
+                <label for="estimated_budget">Estimated Budget:</label>
+                <textarea id="estimated_budget" name="estimated_budget" placeholder="Enter estimated budget... (only numbers)" onclick="highlightTab('BudgetTimeline')" oninput="this.value = this.value.replace(/[^0-9]/g, '')"></textarea>
+                <label for="project_timeline">Project Timeline:</label>
+                <textarea id="project_timeline" name="project_timeline" placeholder="Enter project timeline..." onclick="highlightTab('BudgetTimeline')"></textarea>
+            </div>            
+
+            <div id="FunctionalRequirements" class="section" onclick="highlightTab('FunctionalRequirements')">
+                <h2>Data Management:</h2>
+                <div>
+                    <label for="create">Create</label>
+                    <input type="checkbox" id="create" name="dataManagement" value="Create">
+                    <label for="read">Read</label>
+                    <input type="checkbox" id="read" name="dataManagement" value="Read">
+                    <label for="update">Update</label>
+                    <input type="checkbox" id="update" name="dataManagement" value="Update">
+                    <label for="delete">Delete</label>
+                    <input type="checkbox" id="delete" name="dataManagement" value="Delete">
+                </div>
+                <label>Role-Based Access Control:</label>
+                <select id="rbacSelect" name="rbac" onchange="toggleRBACDetails()" >
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option>
+                </select>
+                <textarea id="rbacDetails" name="rbac_details" placeholder="Details..." class="hidden"></textarea>
+                <label>Data Analytics:</label>
+                <select id="analyticsSelect" name="analytics" onchange="toggleAnalyticsDetails()">
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option>
+                </select>
+                <textarea id="analyticsDetails" name="analytics_details" placeholder="Details..." class="hidden"></textarea>               
+            </div>
+
+            <div id="UserStories" class="section" onclick="highlightTab('NonFunctionalRequirements')">
+                <h2>User Stories</h2>
+                <label>User Stories:</label>
+                <textarea name="Userstories" placeholder="Describe user stories..." onclick="highlightTab('NonFunctionalRequirements')" required></textarea>
+            </div>
+            <div id="UseCases" class="section" onclick="highlightTab('NonFunctionalRequirements')">
+                <h2>Use Cases</h2>
+                <label>Specific Use Cases:</label>
+                <textarea name="Use_Cases" placeholder="Outline interactions between users and the system..." onclick="highlightTab('NonFunctionalRequirements')" required></textarea>
+            </div>
+
+            <div id="NonFunctionalRequirements" class="section" onclick="highlightTab('NonFunctionalRequirements')">
+                <h2>Non-Functional Requirements</h2>
+                <label>Performance Requirements:</label>
+                <textarea name="performance_requirements" placeholder="Describe performance requirements..." onclick="highlightTab('NonFunctionalRequirements')" required></textarea>
+                <label>Usability Requirements:</label>
+                <textarea name="usability_requirements" placeholder="Describe usability requirements..." onclick="highlightTab('NonFunctionalRequirements')" required></textarea>
+                <label>Reliability Requirements:</label>
+                <textarea name="reliability_requirements" placeholder="Describe reliability requirements..." onclick="highlightTab('NonFunctionalRequirements')" required></textarea>
+                
+            </div>
+
+            <div id="SupportMaintenance" class="section" onclick="highlightTab('NonFunctionalRequirements')">
+                <h2>Maintenance Requirements</h2>
+                <label>Support and Maintenance Expectations:</label>
+                <textarea name="support_maintain" placeholder="Specify support expectations..." onclick="highlightTab('NonFunctionalRequirements')" required></textarea>
+            </div>
+
+            <div>
+            <button type="submit" class="next-button">Submit</button>
+            <button type="button" class="prev-button" onclick="window.history.back();">Quit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function highlightTab(tabId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.style.backgroundColor = ''; 
+            });
+            document.getElementById(tabId).style.backgroundColor = '#66b3ff'; 
+        } 
+
+        function toggleRBACDetails() {
+            const rbacSelect = document.getElementById('rbacSelect');
+            const rbacDetails = document.getElementById('rbacDetails');
+            if (rbacSelect.value === 'yes') {
+                rbacDetails.classList.remove('hidden');
+                rbacDetails.style.display = 'block';
+            } else {
+                rbacDetails.classList.add('hidden');
+                rbacDetails.style.display = 'none';
+            }
+        }
+
+        function toggleAnalyticsDetails() {
+            const analyticsSelect = document.getElementById('analyticsSelect');
+            const analyticsDetails = document.getElementById('analyticsDetails');
+            if (analyticsSelect.value === 'yes') {
+                analyticsDetails.classList.remove('hidden');
+                analyticsDetails.style.display = 'block';
+            } else {
+                analyticsDetails.classList.add('hidden');
+                analyticsDetails.style.display = 'none';
+            }
+        }
+        function validateForm() {
+            const projectName = document.getElementById('project_name').value;
+            if (projectName.trim() === '') {
+                alert("Please enter the project name.");
+                return false; 
+            }
+            
+            return true; 
+        }
+
+    </script>
+</body>
+</html>

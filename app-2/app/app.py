@@ -12,10 +12,10 @@ app.secret_key = "your_secret_key"  # Required for flashing messages
 # MySQL Database connection
 def connect_db():
     conn = mysql.connector.connect(
-        host="127.0.0.1",
-        user="root",
-        password="123.Dola",
-        database="project_srs"
+        host=os.getenv("host"),
+        user=os.getenv("user"),
+        password=os.getenv("password"),
+        database=os.getenv("database")
     )
     return conn
 

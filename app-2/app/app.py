@@ -6,6 +6,7 @@ import os
 import json
 import requests
 from dotenv import load_dotenv
+from code_generatorai import generate_code
 
 load_dotenv()
 
@@ -74,20 +75,51 @@ def create_pdf(data, pdf_filepath):
     try:
         # Ensure the 'static' folder exists
         os.makedirs(os.path.dirname(pdf_filepath), exist_ok=True)
+
+        # Initialize the PDF canvas
         c = canvas.Canvas(pdf_filepath, pagesize=letter)
         width, height = letter
 
+        # Starting position for writing text
         y = height - 50
-        for key, value in data.items():
-            c.drawString(100, y, f"{key.replace('_', ' ').title()}: {value}")
-            y -= 20
+        line_height = 20  # Space between lines
 
+        # Write project details from the dictionary
+        for key, value in data.items():
+            formatted_key = key.replace('_', ' ').title()
+            c.drawString(100, y, f"{formatted_key}: {value}")
+            y -= line_height
+
+            # Check if the content overflows to a new page
+            if y < 50:  # Bottom margin
+                c.showPage()
+                c.setFont("Helvetica", 12)
+                y = height - 50
+
+        # Add Wikipedia summary (assuming fetch_wikipedia_summary is a custom function)
         wiki_summary = fetch_wikipedia_summary(data['project_name'])
-        c.drawString(100, y, f"\nWikipedia Summary:\n{wiki_summary}")
+        c.drawString(100, y, "Wikipedia Summary:")
+        y -= line_height
+
+        # Split the summary into lines that fit the page width
+        lines = simpleSplit(wiki_summary, "Helvetica", 12, width - 200)
+        for line in lines:
+            c.drawString(100, y, line)
+            y -= line_height
+
+            # Check for page overflow
+            if y < 50:  # Bottom margin
+                c.showPage()
+                c.setFont("Helvetica", 12)
+                y = height - 50
+
+        # Save the PDF
         c.save()
+        print(f"PDF successfully created at {pdf_filepath}")
     except Exception as e:
         print(f"Error creating PDF: {e}")
         flash("Error generating PDF file.")
+
 
 # Routes
 @app.route('/')
@@ -142,3 +174,6 @@ def output_page():
 
 if __name__ == '__main__':
     app.run(debug=True)
+print("Generating code...")
+    generate_code()
+    print("Code generation complete. Check 'generated_code.txt' for the output.")
